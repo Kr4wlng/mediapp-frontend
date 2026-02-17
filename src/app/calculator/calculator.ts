@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { operate } from 'rxjs/internal/util/lift';
 
@@ -14,6 +14,11 @@ export class CalculatorComponent {
   number2: number = 0;
   sum: number = 0;
 
+  @Input()
+  message: string = 'TITTLE FROM CALCULATOR COMPONENT';
+  @Output()
+  emiter: EventEmitter<number> = new EventEmitter<number>();
+
   /* getNumber1(e : any){
     this.number1 = +e.target.value;
   }
@@ -24,6 +29,7 @@ export class CalculatorComponent {
 
   operate(){
     this.sum = this.number1 + this.number2;
+    this.emiter.emit(this.sum);
   }
 
 }

@@ -12,4 +12,10 @@ import { CalculatorComponent } from './calculator/calculator';
 })
 export class App {
   tittle = 'coders';
+  appMessage = 'TITTLE FROM APP COMPONENT';
+  sum: number = 0;
+
+  getSum(e: number){
+    this.sum = 0;
+  }
 }
