@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../model/patient';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import {MatTableDataSource} from '@angular/material/table';
+import { MaterialModule } from '../../material/material.module';
 
 @Component({
   selector: 'app-patient',
-  imports: [MatTableModule, MatButtonModule, MatIconModule],
+  imports: [MaterialModule],
   templateUrl: './patient.component.html',
   styleUrl: './patient.component.css',
 })
