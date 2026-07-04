@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from "@angular/material/button";
 import { MaterialModule } from "../../material/material.module";
-import { RouterLink } from "@angular/router";
+import { RouterLink, RouterOutlet } from "@angular/router";
 
 @Component({
   selector: 'app-layout',
-  imports: [ MaterialModule, RouterLink ],
+  imports: [MaterialModule, RouterLink, RouterOutlet],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })

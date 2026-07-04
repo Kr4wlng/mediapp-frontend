@@ -53,7 +53,7 @@
             </button>
             <mat-divider></mat-divider>
             <button class="myButton" mat-menu-item (click)="sidenav.toggle()"
-                routerLink="/pages/medic" style="cursor: pointer">
+                routerLink="medic" style="cursor: pointer">
                 <mat-icon>healing</mat-icon>
                 <span>Medic</span>
             </button>
@@ -65,7 +65,7 @@
             </button>
             <mat-divider></mat-divider>
             <button class="myButton" mat-menu-item (click)="sidenav.toggle()"
-                routerLink="/pages/patient" style="cursor: pointer">
+                routerLink="patient" style="cursor: pointer">
                 <mat-icon>accessibility</mat-icon>
                 <span>Patient</span>
             </button>
@@ -79,7 +79,7 @@
         </mat-sidenav>
 
         <mat-sidenav-content>
-
+            <router-outlet/>
         </mat-sidenav-content>
 
     </mat-sidenav-container>
