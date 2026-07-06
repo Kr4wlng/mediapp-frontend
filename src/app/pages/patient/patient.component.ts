@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../model/patient';
 import {MatTableDataSource} from '@angular/material/table';
 import { MaterialModule } from '../../material/material.module';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-patient',
@@ -23,16 +25,25 @@ export class PatientComponent implements OnInit{
     { def: 'actions', label: 'actions', hide: false }
   ]
 
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   constructor(private patientService: PatientService){}
 
   ngOnInit(): void {
     this.patientService.findAll().subscribe(data => {
       this.dataSource.data = data;
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     });
   }
 
   getDisplayColumns(){
     return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
+  }
+
+  applyFilter(e: any){
+    this.dataSource.filter = e.target.value.trim();
   }
 
 }
