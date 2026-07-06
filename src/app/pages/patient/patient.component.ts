@@ -5,10 +5,11 @@ import {MatTableDataSource} from '@angular/material/table';
 import { MaterialModule } from '../../material/material.module';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-patient',
-  imports: [MaterialModule],
+  imports: [MaterialModule, RouterOutlet, RouterLink],
   templateUrl: './patient.component.html',
   styleUrl: './patient.component.css',
 })
