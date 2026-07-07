@@ -3,20 +3,23 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { Patient } from '../model/patient';
 import { Subject } from 'rxjs';
+import { GenericService } from './generic.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PatientService {
+export class PatientService extends GenericService<Patient>{
 
-  private url: string = `${environment.HOST}/patients`;
+  //private url: string = `${environment.HOST}/patients`;
   private patientChange: Subject<Patient[]> = new Subject<Patient[]>;
   private messageChange: Subject<string> = new Subject<string>;
 
   // La inyección de dependencias en Angular se hacen por constructor
-  constructor(private http: HttpClient){}
+  constructor(protected override http: HttpClient){
+    super(http, `${environment.HOST}/patients`)
+  }
 
-  findAll(){
+  /*findAll(){
     return this.http.get<Patient[]>(this.url);
   }
 
@@ -34,7 +37,7 @@ export class PatientService {
 
   delete(id: number){
     return this.http.delete(`${this.url}/${id}`);
-  }
+  }*/
 
   ///////////////////////////////
   setPatientChange(data: Patient[]){
