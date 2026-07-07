@@ -6,6 +6,8 @@ import { MaterialModule } from '../../material/material.module';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-patient',
@@ -29,14 +31,24 @@ export class PatientComponent implements OnInit{
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private patientService: PatientService){}
+  constructor(
+    private patientService: PatientService,
+    private _snackBar: MatSnackBar
+  ){}
 
   ngOnInit(): void {
-    this.patientService.findAll().subscribe(data => {
-      this.dataSource.data = data;
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+    this.patientService.findAll().subscribe(data => this.createTable(data));
+
+    this.patientService.getPatientChange().subscribe(data => this.createTable(data));
+    this.patientService.getMessageChange().subscribe(data => {
+      this._snackBar.open(data, 'INFOR', { duration: 2000, verticalPosition: 'top', horizontalPosition: 'right'})
     });
+  }
+
+  createTable(data: Patient[]){
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   getDisplayColumns(){
@@ -45,6 +57,15 @@ export class PatientComponent implements OnInit{
 
   applyFilter(e: any){
     this.dataSource.filter = e.target.value.trim();
+  }
+
+  delete(idPatient: number){
+    this.patientService.delete(idPatient)
+    .pipe(switchMap( () => this.patientService.findAll() ))
+    .subscribe(data => {
+      this.patientService.setPatientChange(data);
+      this.patientService.setMessageChange('DELETED!')
+    })
   }
 
 }
