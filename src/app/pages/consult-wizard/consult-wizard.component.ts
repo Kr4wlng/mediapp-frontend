@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaterialModule } from '../../material/material.module';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PatientService } from '../../services/patient.service';
@@ -10,10 +10,14 @@ import { ConsultDetail } from '../../model/consultDetail';
 import { Exam } from '../../model/exam';
 import { ExamService } from '../../services/exam.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Medic } from '../../model/medic';
+import { MedicService } from '../../services/medic.service';
+import { FlexLayoutModule } from 'ngx-flexible-layout';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-consult-wizard',
-  imports: [MaterialModule, ReactiveFormsModule, AsyncPipe],
+  imports: [MaterialModule, ReactiveFormsModule, AsyncPipe, FlexLayoutModule],
   templateUrl: './consult-wizard.component.html',
   styleUrl: './consult-wizard.component.css',
 })
@@ -23,7 +27,7 @@ export class ConsultWizardComponent implements OnInit{
   secondFormGroup: FormGroup;
 
   patients: Patient[];
-  patients$: Observable<Patient[]>
+  patients$: Observable<Patient[]>;
 
   minDate: Date = new Date();
   details: ConsultDetail[] = [];
@@ -32,10 +36,18 @@ export class ConsultWizardComponent implements OnInit{
   examControl: FormControl = new FormControl();
 
   examsSelected: Exam[] = [];
+  medics: Medic[];
+  medicSelected: Medic;
+
+  consultArray: number[] = [];
+  consultSelected: number;
+
+  @ViewChild('stepper') stepper: MatStepper;
 
   constructor(
     private formBuilder: FormBuilder,
     private patientService: PatientService,
+    private medicService: MedicService,
     private examService: ExamService,
     private _snackBar: MatSnackBar
   ){
@@ -61,6 +73,11 @@ export class ConsultWizardComponent implements OnInit{
   loadInitialData(){
     this.patients$ = this.patientService.findAll();
     this.examService.findAll().subscribe(data => this.exams = data);
+    this.medicService.findAll().subscribe(data => this.medics = data)
+
+    for(let i = 1; i <= 100; i++){
+      this.consultArray.push(i);
+    }
   }
 
   filterExams(val: any){
@@ -113,6 +130,23 @@ export class ConsultWizardComponent implements OnInit{
       }
     } else {
       this._snackBar.open('Please select an exam', 'INFO', { duration: 2000 });
+    }
+  }
+
+  selectMedic(m: Medic){
+    this.medicSelected = m;
+  }
+
+  selectedConsult(m:number){
+    this.consultSelected = m;
+  }
+
+  nextManualStep(){
+    if(this.consultSelected > 0){
+      //next step
+      this.stepper.next();
+    } else {
+      this._snackBar.open('Please select a consult number', 'INFO', { duration: 2000 });
     }
   }
 
