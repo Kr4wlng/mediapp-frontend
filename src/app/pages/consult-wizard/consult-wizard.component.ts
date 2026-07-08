@@ -21,6 +21,8 @@ export class ConsultWizardComponent implements OnInit{
   patients: Patient[];
   patients$: Observable<Patient[]>
 
+  minDate: Date = new Date();
+
   constructor(
     private formBuilder: FormBuilder,
     private patientService: PatientService
@@ -39,6 +41,10 @@ export class ConsultWizardComponent implements OnInit{
 
     this.secondFormGroup = this.formBuilder.group({});
     this.patients$ = this.patientService.findAll();
+  }
+
+  getDate(e: any){
+    console.log(e.value);
   }
 
 }
