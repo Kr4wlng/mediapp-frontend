@@ -6,6 +6,7 @@ import { Patient } from '../../model/patient';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MatOption } from "@angular/material/select";
+import { ConsultDetail } from '../../model/consultDetail';
 
 @Component({
   selector: 'app-consult-wizard',
@@ -22,6 +23,7 @@ export class ConsultWizardComponent implements OnInit{
   patients$: Observable<Patient[]>
 
   minDate: Date = new Date();
+  details: ConsultDetail[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,6 +47,18 @@ export class ConsultWizardComponent implements OnInit{
 
   getDate(e: any){
     console.log(e.value);
+  }
+
+  addDetail(){
+    const det = new ConsultDetail();
+    det.diagnosis = this.firstFormGroup.value['diagnosis'];
+    det.treatment = this.firstFormGroup.value['treatment'];
+
+    this.details.push(det);
+  }
+
+  removeDetail(index: number){
+    this.details.splice(index, 1);
   }
 
 }
