@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { ConsultListExamDTOI } from '../model/consultListExamDTOI';
+import { Consult } from '../model/consult';
+import { FilterConsultDTO } from '../model/filterConsultDTO';
+import { Exam } from '../model/exam';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +17,23 @@ export class ConsultService {
 
   saveTransactional(dto: ConsultListExamDTOI){
     return this.http.post(this.url, dto);
+  }
+
+  searchByDates(date1: string, date2: string){
+    /* const params: HttpParams = new HttpParams();
+    params.set('date1', date1);
+    params.set('date2', date2);
+
+    return this.http.get<Consult[]>(`${thir.url}/search/dates`, { params: params });*/
+    return this.http.get<Consult[]>(`${this.url}/search/dates?date1=${date1}&date2=${date2}`);
+  }
+
+  searchOthers(dto: FilterConsultDTO){
+    return this.http.post<Consult[]>(`${this.url}/search/others`, dto);
+  }
+
+  getExamsByIdConsult(idConsult: number){
+    return this.http.get<Exam[]>(`${environment.HOST}/consultexams/${idConsult}`);
   }
 
 }
