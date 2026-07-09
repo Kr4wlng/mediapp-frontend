@@ -19,6 +19,10 @@ export class PatientService extends GenericService<Patient>{
     super(http, `${environment.HOST}/patients`)
   }
 
+  listPageable(p: number, s: number){
+    return this.http.get<any>(`${this.url}/pageable?page=${p}&size=${s}`);
+  }
+
   /*findAll(){
     return this.http.get<Patient[]>(this.url);
   }
